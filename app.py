@@ -152,3 +152,40 @@ if st.button("Calculate Option Price"):
 
 
     st.pyplot(fig)
+
+# ==========================
+# Show Code Section
+# ==========================
+
+with st.expander("Show Python Code"):
+
+    st.code("""
+def explicit_fd(K, S0, T, r, sigma, S_max, M, N):
+
+    dS = S_max / M
+    dt = T / N
+
+    S = np.linspace(0, S_max, M+1)
+
+    V = np.maximum(S-K,0)
+
+    i = np.arange(1,M)
+
+    a = 0.5*dt*(sigma**2*i**2-r*i)
+    b = 1-dt*(sigma**2*i**2+r)
+    c = 0.5*dt*(sigma**2*i**2+r*i)
+
+    for n in range(N):
+
+        V_old = V.copy()
+
+        for j in range(1,M):
+
+            V[j] = (
+                a[j-1]*V_old[j-1]
+                +b[j-1]*V_old[j]
+                +c[j-1]*V_old[j+1]
+            )
+
+    return V
+""", language="python")
